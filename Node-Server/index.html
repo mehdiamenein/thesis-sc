@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      var socket = io();
+      var index = 0;
+
+      var messages = document.getElementById("messages");
+
+      function ResultSubmissions(e, msg, img) {
+        e.preventDefault();
+        // console.log(e.target.parentNode.parentNode.id);
+        var el = document.getElementById(e.target.parentNode.parentNode.id);
+        el.parentNode.remove();
+        socket.emit("result message", { result: msg, image: img });
+      }
+
+      socket.on("delete message", function (msg) {
+        messages.childNodes.forEach((cn) => {
+          if (cn.querySelector("img").src.includes(msg)) {
+            cn.remove();
+          }
+        });
+      });
+
+      socket.on("chat message", function (msg) {
+        var item = document.createElement("div");
+        index++;
+        item.innerHTML = `
+          <div style="text-align: center" id="section${index}">
+            <img src="${msg}" style="max-width: 90vw;"/>
+            <div style="display: flex; justify-content: center">
+              <button onclick="ResultSubmissions(event, 'Incorrect', '${msg}')">
+                incorrect item
+              </button>
+              <button onclick="ResultSubmissions(event, 'Correct', '${msg}')">
+                correct item
+              </button>
+            </div>
+          </div>
+        `;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+  </body>
+</html>
