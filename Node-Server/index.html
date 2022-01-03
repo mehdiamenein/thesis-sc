@@ -82,11 +82,13 @@
       });
 
       socket.on("chat message", function (msg) {
+        console.log(msg);
         var item = document.createElement("div");
         index++;
+        console.log(msg.file.data.attributes.url);
         item.innerHTML = `
           <div style="text-align: center" id="section${index}">
-            <img src="${msg}" style="max-width: 90vw;"/>
+            <img src="https://strapi.learnflow.io${msg.file.data.attributes.url}" style="max-width: 90vw;"/>
             <div style="display: flex; justify-content: center">
               <button onclick="ResultSubmissions(event, 'Incorrect', '${msg}')">
                 incorrect item

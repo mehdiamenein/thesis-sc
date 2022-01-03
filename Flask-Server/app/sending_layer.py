@@ -9,13 +9,19 @@ send = Blueprint('send', __name__, url_prefix="/socket")
 # Routes
 @send.route('<path:text>', methods=['GET', 'POST'])
 def all_routes(text):
-    resp = requests.request(
-        method=request.method,
-        url=request.url.replace(os.getenv('HOST') + "/socket", os.getenv('EXT_HOST')),
-        headers={key: value for (key, value) in request.headers if key != 'Host'},
-        data=request.get_data(),
-        cookies=request.cookies,
-        allow_redirects=False)
+    print(os.getenv('HOST'))
+    print(request.url.replace(os.getenv('HOST') + "/socket", os.getenv('EXT_HOST')))
+    try:
+        resp = requests.request(
+            method=request.method,
+            url=request.url.replace(os.getenv('HOST') + "/socket", os.getenv('EXT_HOST')),
+            headers={key: value for (key, value) in request.headers if key != 'Host'},
+            data=request.get_data(),
+            cookies=request.cookies,
+            allow_redirects=False)
+    except Exception as e:
+        return e
+    # return resp
 
     excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
     headers = [(name, value) for (name, value) in resp.raw.headers.items()

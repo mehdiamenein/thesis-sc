@@ -1,0 +1,32 @@
+http://*.learnflow.io {
+  redir https://{host}{uri}
+}
+https://python.learnflow.io {
+  reverse_proxy localhost:5000
+}
+https://node.learnflow.io {
+  basicauth /* {
+    Mehdi JDJhJDE0JEV2SS5UZ2NPcFFBclRUUmRocEhJYk92U2hCcmdaSGxaUHlQZ1pQUjZiTVBxaHBxT29SUW1X
+    Klat JDJhJDE0JEdqVnFodkVyS1dTdFZPam9RVnJmamVrQzJvYjZ3ZUVkci95ekdDeTlBbVd0T2pSL2tQUHQu
+  }
+  reverse_proxy localhost:3000
+}
+https://strapi.learnflow.io {
+  basicauth /uploads/* {
+    Mehdi JDJhJDE0JEV2SS5UZ2NPcFFBclRUUmRocEhJYk92U2hCcmdaSGxaUHlQZ1pQUjZiTVBxaHBxT29SUW1X
+    Klat JDJhJDE0JEdqVnFodkVyS1dTdFZPam9RVnJmamVrQzJvYjZ3ZUVkci95ekdDeTlBbVd0T2pSL2tQUHQu
+  }
+  reverse_proxy localhost:1337
+}
+https://manual.learnflow.io {
+  basicauth /* {
+    Mehdi JDJhJDE0JEV2SS5UZ2NPcFFBclRUUmRocEhJYk92U2hCcmdaSGxaUHlQZ1pQUjZiTVBxaHBxT29SUW1X
+    Klat JDJhJDE0JEdqVnFodkVyS1dTdFZPam9RVnJmamVrQzJvYjZ3ZUVkci95ekdDeTlBbVd0T2pSL2tQUHQu
+  }
+  file_server {
+    root /home/Projects/Thesis_Project/SampleFrontUpload
+  }
+}
+
+# caddy hash-password "{PASSWORD}"
+# caddy start --config ./Caddyfile

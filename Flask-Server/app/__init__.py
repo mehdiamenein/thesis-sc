@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 
 """
 config = {
@@ -17,6 +18,7 @@ def create_app():
     """Construct the core application."""
     app = Flask(__name__)
     app.config.from_mapping(config)
+    cors = CORS(app, resources={r"/socket/*": {"origins": "https://manual.learnflow.io"}})
     with app.app_context():
         from . import routes  # Import routes
         return app

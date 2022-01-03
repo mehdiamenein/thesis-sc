@@ -10,4 +10,5 @@ recieve = Blueprint('recieve', __name__, url_prefix="/result")
 @recieve.route('get/result', methods=['POST'])
 def get_result():
     # Do whatever with the data
+    print(request.json)
     return request.json
